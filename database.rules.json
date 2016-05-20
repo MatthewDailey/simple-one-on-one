@@ -16,6 +16,8 @@
         },
 
         "notes" : {
+            ".indexOn" : ["peep_id", "timestamp"],
+
             "$note_id" : {
                 // Note that peep_id is optional since a note may not be about a person.
                 ".validate" : "newData.hasChildren(['timestamp', 'title', 'message'])",
