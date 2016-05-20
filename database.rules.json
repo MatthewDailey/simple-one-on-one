@@ -1,0 +1,52 @@
+{
+  "rules" : {
+    "$user_id" : {
+        ".read" : "$user_id === auth.uid",
+        ".write" : "$user_id === auth.uid",
+
+        "peeps" : {
+            "$peep_id" : {
+                ".validate" : "newData.hasChildren(['name'])",
+                "name" : {
+                    ".validate" : "newData.isString()"
+                }
+                // Currently allow other fields.
+                // "$other" : {".validate" : false}
+            }
+        },
+
+        "notes" : {
+            "$note_id" : {
+                // Note that peep_id is optional since a note may not be about a person.
+                ".validate" : "newData.hasChildren(['timestamp', 'title', 'message'])",
+
+                // Note that clients should use firebase.database.ServerValue.TIMESTAMP to 
+                // make sure timestamps are safe.
+                "timestamp" : {
+                    ".validate" : "newData.val() <= now"
+                },
+
+                "title" : {
+                    ".validate" : "newData.isString()"
+                },
+
+                "message" : {
+                    ".validate" : "newData.isString"
+                } 
+            }
+        },
+
+        "teams" : {
+            "$team_id" : {
+                ".validate" : "newData.hasChildren(['name'])",
+                "name" : {
+                    ".validate" : "newData.isString()"
+                },
+                "$peep_id" : {
+                    ".validate" : "newData.isString()"
+                }
+            }
+        }
+    }
+  }
+}
