@@ -58,6 +58,46 @@
     </style>
   </head>
   <body>
+    <!-- TODO: Use npm + webpack to install this locally and factor everything out. -->
+    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "TODO",
+        authDomain: "TODO",
+        databaseURL: "TODO",
+        storageBucket: "",
+      };
+      firebase.initializeApp(config);
+      
+      var createNewNote = function(userId, title, message, peepId) {
+        var timestamp = firebase.database.ServerValue.TIMESTAMP;
+        var database = firebase.database();
+
+        var newNoteKey = database.ref(userId).child("notes").push().key;
+
+        var newNote = {
+          "timestamp" : timestamp,
+          "title" : title,
+          "message" : message
+        };
+        if (peepId) {
+          newNote["peep_id"] = peepId;
+        }
+
+        var updates = {}
+        updates["/notes/" + newNoteKey] = newNote;
+
+        database.ref(userId).update(updates)
+          .then(function(result) {
+            // Success + show.
+          })
+          .catch(function(error) {
+            // Failure! hide.
+          });
+      }
+
+    </script>
     <div id="message">
       <h1>Welcome to Firebase Hosting</h1>
       <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
