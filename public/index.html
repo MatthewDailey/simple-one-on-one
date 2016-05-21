@@ -63,12 +63,13 @@
     <script>
       // Initialize Firebase
       var config = {
-        apiKey: "TODO",
-        authDomain: "TODO",
-        databaseURL: "TODO",
-        storageBucket: "",
+        apiKey: "AIzaSyAHsBIF67mHchYUg0vtOtRpWw0r268-bZ8",
+        authDomain: "simple-one-on-one.firebaseapp.com",
+        databaseURL: "https://simple-one-on-one.firebaseio.com",
+        storageBucket: "simple-one-on-one.appspot.com",
       };
       firebase.initializeApp(config);
+
       
       var createNewNote = function(userId, title, message, peepId) {
         var timestamp = firebase.database.ServerValue.TIMESTAMP;
