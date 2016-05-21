@@ -2,58 +2,88 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Welcome to Firebase Hosting</title>
-    <style media="screen">
+    <title>People Notes</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <style>
+    /* Space out content a bit */
       body {
-        font-family: Roboto, Arial, sans-serif;
-        background: #ECEFF1;
-        color: rgba(0,0,0,0.87);
+        padding-top: 20px;
+        padding-bottom: 20px;
       }
 
-      a {
-        color: rgb(3,155,229);
+      /* Everything but the jumbotron gets side spacing for mobile first views */
+      .header,
+      .marketing,
+      .footer {
+        padding-right: 15px;
+        padding-left: 15px;
       }
 
-      .message {
-        max-width: 400px;
-        margin: 40px auto;
-        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2),0 1px 1px 0 rgba(0,0,0,0.14),0 2px 1px -1px rgba(0,0,0,0.12);
-        border-radius: 2px;
-        background: white;
-        padding: 16px 24px;
+      /* Custom page header */
+      .header {
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      /* Make the masthead heading the same height as the navigation */
+      .header h3 {
+        margin-top: 0;
+        margin-bottom: 0;
+        line-height: 40px;
       }
 
-      .message h1 {
-        font-size: 22px;
-        font-weight: 500;
+      /* Custom page footer */
+      .footer {
+        padding-top: 19px;
+        color: #777;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      /* Customize container */
+      @media (min-width: 768px) {
+        .container {
+          max-width: 730px;
+        }
+      }
+      .container-narrow > hr {
+        margin: 30px 0;
+      }
+
+      /* Main marketing message and sign up button */
+      .jumbotron {
         text-align: center;
-        margin: 0 0 16px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      .jumbotron .btn {
+        padding: 14px 24px;
+        font-size: 21px;
       }
 
-      .message p {
-        font-weight: 300;
-        line-height: 150%;
+      /* Supporting marketing content */
+      .marketing {
+        margin: 40px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
       }
 
-      .message ul {
-        list-style: none;
-        margin: 16px 0 0;
-        padding: 0;
-        text-align: center;
-      }
-
-      .message li a {
-        display: inline-block;
-        padding: 8px;
-        text-transform: uppercase;
-        text-decoration: none;
-        font-weight: 500;
-        background: rgb(3,155,229);
-        color: white;
-        border: 1px solid rgb(3,155,229);
-        border-radius: 3px;
-        font-size: 14px;
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+      /* Responsive: Portrait tablets and up */
+      @media screen and (min-width: 768px) {
+        /* Remove the padding we set earlier */
+        .header,
+        .marketing,
+        .footer {
+          padding-right: 0;
+          padding-left: 0;
+        }
+        /* Space out the masthead */
+        .header {
+          margin-bottom: 30px;
+        }
+        /* Remove the bottom border on the jumbotron for visual effect */
+        .jumbotron {
+          border-bottom: 0;
+        }
       }
     </style>
   </head>
@@ -87,8 +117,8 @@
           var note = store.data.notes[noteKey];
           console.log(note)
           var noteDiv = document.createElement('div');
-          noteDiv.className = "message";
-          noteDiv.innerHTML = "<h1>" + note.title + "</h1>"
+          noteDiv.className = "col-lg-12";
+          noteDiv.innerHTML = "<h4>" + note.title + "</h4>"
                           + "<p>" + note.message + "</p>";
           dataViewElement.appendChild(noteDiv);
         }
@@ -153,16 +183,28 @@
       }
 
     </script>
-    <div class="message" id="login-box">
-      <h1>Welcome to People Manager</h1>
-      <p>People manager allows you to view your notes about your team on two axis: (1) period of work or (2) individual history.</p>
-      <p>Please login to access your people notes.</p>
-      <ul>
-        <li><a target="_blank" onclick="login()">login with google</a></li>
-      </ul>
-    </div>
-    <div id="data-view" style="display: none;">
-    </div>
+    
+
+    <div class="container">
+      <div class="header clearfix">
+        <h3 class="text-muted">People Manager</h3>
+      </div>
+
+      <div class="jumbotron" id="login-box">
+        <h1>Welcome to People Manager</h1>
+        <p class="lead">People manager allows you to view your notes about your team on two axis: (1) period of work or (2) individual history.</p>
+        <p>Please login to access your people notes.</p>
+        <p><a class="btn btn-lg btn-success" onclick="login()" role="button">Login with Google</a></p>
+      </div>
+      
+      <div class="row marketing" id="data-view" style="display: none;">
+      </div>
+
+      <footer class="footer">
+        <p>&copy; 2016 Matt Dailey</p>
+      </footer>
+
+    </div> <!-- /container -->
     
   </body>
 </html>
