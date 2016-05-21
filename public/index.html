@@ -110,9 +110,9 @@
 
       var showLoggedInViewFromStore = function() {
         console.log("Showing logged in data view.");
-        var dataViewElement = document.getElementById('data-view')
-        dataViewElement.style.display = "";
-        
+        document.getElementById('nav-data-view').style.display = ""
+        document.getElementById('data-view').style.display = ""
+
         for (var noteKey in store.data.notes) {
           var note = store.data.notes[noteKey];
           var noteDiv = document.createElement('div');
@@ -120,7 +120,7 @@
           noteDiv.innerHTML = "<h3>" + note.title + "</h3>"
                           + "<h6>" + new Date(note.timestamp) + "</h6>"
                           + "<p>" + note.message + "</p>";
-          dataViewElement.appendChild(noteDiv);
+          document.getElementById('data-view').appendChild(noteDiv);
         }
       }
 
@@ -182,11 +182,20 @@
           });
       }
 
+      var launchCreateNoteModal = function() {
+        // TODO: Launch a modal to create a note.
+      }
+
     </script>
     
 
     <div class="container">
       <div class="header clearfix">
+        <nav id="nav-data-view" style="display: none;">
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="#" onclick="launchCreateNoteModal()">Create Note</a></li>
+          </ul>
+        </nav>
         <h3 class="text-muted">People Manager</h3>
       </div>
 
