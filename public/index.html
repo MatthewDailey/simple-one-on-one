@@ -79,7 +79,19 @@
       };
 
       var showLoggedInViewFromStore = function() {
-        // TODO: Show logged in view from store.
+        console.log("Showing logged in data view.");
+        var dataViewElement = document.getElementById('data-view')
+        dataViewElement.style.display = "";
+        
+        for (var noteKey in store.data.notes) {
+          var note = store.data.notes[noteKey];
+          console.log(note)
+          var noteDiv = document.createElement('div');
+          noteDiv.className = "message";
+          noteDiv.innerHTML = "<h1>" + note.title + "</h1>"
+                          + "<p>" + note.message + "</p>";
+          dataViewElement.appendChild(noteDiv);
+        }
       }
 
       // DB for relevant state. Poor man's flux.
@@ -150,14 +162,6 @@
       </ul>
     </div>
     <div id="data-view" style="display: none;">
-      <div class="message" id="login-box">
-        <h1>Welcome to People Manager</h1>
-        <p>People manager allows you to view your notes about your team on two axis: (1) period of work or (2) individual history.</p>
-        <p>Please login to access your people notes.</p>
-        <ul>
-          <li><a target="_blank" onclick="login()">login with google</a></li>
-        </ul>
-      </div>
     </div>
     
   </body>
