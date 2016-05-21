@@ -33,7 +33,7 @@
                 },
 
                 "message" : {
-                    ".validate" : "newData.isString"
+                    ".validate" : "newData.isString()"
                 } 
             }
         },
