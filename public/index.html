@@ -115,10 +115,10 @@
         
         for (var noteKey in store.data.notes) {
           var note = store.data.notes[noteKey];
-          console.log(note)
           var noteDiv = document.createElement('div');
           noteDiv.className = "col-lg-12";
-          noteDiv.innerHTML = "<h4>" + note.title + "</h4>"
+          noteDiv.innerHTML = "<h3>" + note.title + "</h3>"
+                          + "<h6>" + new Date(note.timestamp) + "</h6>"
                           + "<p>" + note.message + "</p>";
           dataViewElement.appendChild(noteDiv);
         }
