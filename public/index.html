@@ -70,6 +70,30 @@
       };
       firebase.initializeApp(config);
 
+
+      var provider = new firebase.auth.GoogleAuthProvider();
+
+      var login = function () {
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          var token = result.credential.accessToken;
+          // The signed-in user info.
+          var user = result.user;
+          // ...
+          console.log(user)
+        }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // The email of the user's account used.
+          var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          var credential = error.credential;
+          // ...
+          console.log(error);
+        });
+      };
+
       
       var createNewNote = function(userId, title, message, peepId) {
         var timestamp = firebase.database.ServerValue.TIMESTAMP;
@@ -103,7 +127,7 @@
       <h1>Welcome to Firebase Hosting</h1>
       <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
       <ul>
-        <li><a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a></li>
+        <li><a target="_blank" onclick="login()">login</a></li>
       </ul>
     </div>
   </body>
