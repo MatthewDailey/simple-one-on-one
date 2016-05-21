@@ -73,27 +73,45 @@
 
       var provider = new firebase.auth.GoogleAuthProvider();
 
-      var login = function () {
-        firebase.auth().signInWithPopup(provider).then(function(result) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          var token = result.credential.accessToken;
-          // The signed-in user info.
-          var user = result.user;
-          // ...
-          console.log(user)
-        }).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // ...
-          console.log(error);
-        });
+      var hideLogin = function() {
+        // TODO: Hide the login box.
       };
 
+      var showLoggedInViewFromStore = function() {
+        // TODO: Show logged in view from store.
+      }
+
+      // DB for relevant state. Poor man's flux.
+      var store = {}
+
+      var login = function () {
+        firebase.auth().signInWithPopup(provider)
+          .then(function(result) {
+            // The signed-in user info.
+            store.user = result.user
+            console.log(store.user)
+            return store.user;
+          })
+          .catch(function(error) {
+            alert("Unable to login. Please try again.");
+            console.log(error);
+          })
+          .then(function(user) {
+            return firebase.database().ref(user.uid).once("value");
+          })
+          .then(function(userData) {
+            console.log(userData.val());
+            store.data = userData.val();
+          })
+          .then(function() {
+            hideLogin();
+            showLoggedInViewFromStore();
+          })
+          .catch(function(error) {
+            alert("Unable to load user data.")
+            console.log(error);
+          });
+      };
       
       var createNewNote = function(userId, title, message, peepId) {
         var timestamp = firebase.database.ServerValue.TIMESTAMP;
