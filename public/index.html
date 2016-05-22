@@ -105,15 +105,15 @@
 
       var provider = new firebase.auth.GoogleAuthProvider();
 
-      var hideLogin = function() {
+      var hideLoginAndShowData = function() {
         console.log("Hiding login-box.")
         document.getElementById('login-box').style.display = "none";
+        document.getElementById('nav-data-view').style.display = ""
+        document.getElementById('data-view').style.display = ""
       };
 
       var showLoggedInViewFromStore = function() {
         console.log("Showing logged in data view.");
-        document.getElementById('nav-data-view').style.display = ""
-        document.getElementById('data-view').style.display = ""
 
         for (var noteKey in store.data.notes) {
           var note = store.data.notes[noteKey];
@@ -130,7 +130,10 @@
       var store = {}
 
       var login = function () {
-        firebase.auth().signInWithPopup(provider)
+        if (firebase.auth().currentUser) {
+          hideLoginAndShowData();
+        } else {
+          firebase.auth().signInWithPopup(provider)
           .then(function(result) {
             // The signed-in user info.
             store.user = result.user
@@ -148,13 +151,14 @@
             console.log(userData.val());
             store.data = userData.val();
 
-            hideLogin();
+            hideLoginAndShowData();
             showLoggedInViewFromStore();
           })
           .catch(function(error) {
             alert("Unable to load user data.")
             console.log(error);
           });
+        }
       };
 
       var createNewPeep = function(userId, peepName) {
@@ -210,10 +214,6 @@
           document.getElementById("new-note-title").value, 
           document.getElementById("new-note-message").value);
       };
-
-      var launchCreateNoteModal = function() {
-        // TODO: Launch a modal to create a note.
-      }
 
     </script>
     
