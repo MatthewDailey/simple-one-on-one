@@ -154,6 +154,25 @@
             console.log(error);
           });
       };
+
+      var createNewPeep = function(userId, peepName) {
+        var database = firebase.database();
+        var newPeepKey = database.ref(userId).child("peeps").push().key
+
+        var newPeep = {"name" : peepName};
+
+        var update = {};
+        update["/peeps/" + newPeepKey] = newPeepKey;
+
+        database.ref(userId).update(updates)
+          .then(function(result) {
+            console.log("Successfully created new peep: " + peepName);
+          })
+          .catch(function(error)) {
+            alert("Failed to create peep. Try again.")
+            console.log(error);
+          });
+      };
       
       var createNewNote = function(userId, title, message, peepId) {
         var timestamp = firebase.database.ServerValue.TIMESTAMP;
@@ -173,12 +192,13 @@
         var updates = {}
         updates["/notes/" + newNoteKey] = newNote;
 
-        database.ref(userId).update(updates)
+        database.ref(userId)
+          .update(updates)
           .then(function(result) {
-            // Success + show.
-          })
-          .catch(function(error) {
-            // Failure! hide.
+            console.log("Successfully created new note: " + title);
+          }).catch(function(error) {
+            alert("Failed to create note. Try again.");
+            console.log(error);
           });
       }
 
