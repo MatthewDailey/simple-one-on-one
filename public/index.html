@@ -88,7 +88,9 @@
     </style>
   </head>
   <body>
-    <!-- TODO: Use npm + webpack to install this locally and factor everything out. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
     <script>
       // Initialize Firebase
@@ -168,7 +170,7 @@
           .then(function(result) {
             console.log("Successfully created new peep: " + peepName);
           })
-          .catch(function(error)) {
+          .catch(function(error) {
             alert("Failed to create peep. Try again.")
             console.log(error);
           });
@@ -202,6 +204,13 @@
           });
       }
 
+      var createNewNoteFromModal = function () {
+        // TODO add peep choosing.
+        createNewNote(store.user.uid, 
+          document.getElementById("new-note-title").value, 
+          document.getElementById("new-note-message").value);
+      };
+
       var launchCreateNoteModal = function() {
         // TODO: Launch a modal to create a note.
       }
@@ -213,10 +222,37 @@
       <div class="header clearfix">
         <nav id="nav-data-view" style="display: none;">
           <ul class="nav nav-pills pull-right">
-            <li role="presentation"><a href="#" onclick="launchCreateNoteModal()">Create Note</a></li>
+            <li role="presentation">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Create Note</button>
+            </li>
           </ul>
         </nav>
         <h3 class="text-muted">People Manager</h3>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Create New Note</h4>
+            </div>
+            <div class="modal-body">
+              <form role="form">
+                <div class="form-group">
+                  <label for="usr">Title:</label>
+                  <input type="text" class="form-control" id="new-note-title">
+                </div>
+                <div class="form-group">
+                  <label for="comment">Message:</label>
+                  <textarea class="form-control" rows="5" id="new-note-message"></textarea>
+                </div>
+                <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="createNewNoteFromModal()">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="jumbotron" id="login-box">
