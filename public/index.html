@@ -115,16 +115,47 @@
       var clearDataView = function() {
         var dataViewNode = document.getElementById("data-view");
         while (dataViewNode.firstChild) {
-            dataViewNode.removeChild(dataViewNode.firstChild);
+          dataViewNode.removeChild(dataViewNode.firstChild);
         }
       }
+
+      var alwaysTruePredicate = function(obj) {
+        return true;
+      }
+
+      var getNotesForPeep = function(peepId) {
+        return function(note) {
+          return peepId == note.peep_id
+        }
+      }
+
+      var visibleNotesPredicate = alwaysTruePredicate;
+
+      var selectVisibleNotes = function(notes) {
+        var validNotes = []
+        for (var noteKey in store.data.notes) {
+          var note = store.data.notes[noteKey];
+          if (visibleNotesPredicate(note)) {
+            validNotes.push(note);
+          }  
+        }          
+        return validNotes;
+      }
+
+      var sortByTimestamp = function(noteA, noteB) {
+        return noteB.timestamp - noteA.timestamp;
+      }
+
+      var sortNotes = sortByTimestamp;
 
       var showLoggedInViewFromStore = function() {
         console.log("Showing logged in data view.");
         clearDataView();
 
-        for (var noteKey in store.data.notes) {
-          var note = store.data.notes[noteKey];
+        var visibleNotes = selectVisibleNotes(store.data.notes).sort(sortNotes);
+
+        for (var noteKey in visibleNotes) {
+          var note = visibleNotes[noteKey];
           var noteDiv = document.createElement('div');
           noteDiv.className = "col-lg-12";
           noteDiv.innerHTML = "<h3>" + note.title + "</h3>"
