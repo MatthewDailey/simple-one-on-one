@@ -112,8 +112,16 @@
         document.getElementById('data-view').style.display = ""
       };
 
+      var clearDataView = function() {
+        var dataViewNode = document.getElementById("data-view");
+        while (dataViewNode.firstChild) {
+            dataViewNode.removeChild(dataViewNode.firstChild);
+        }
+      }
+
       var showLoggedInViewFromStore = function() {
         console.log("Showing logged in data view.");
+        clearDataView();
 
         for (var noteKey in store.data.notes) {
           var note = store.data.notes[noteKey];
@@ -131,6 +139,8 @@
 
       var login = function () {
         if (firebase.auth().currentUser) {
+          store.user = firebase.auth().currentUser
+          setListenerOnNotes()
           hideLoginAndShowData();
         } else {
           firebase.auth().signInWithPopup(provider)
@@ -138,28 +148,27 @@
             // The signed-in user info.
             store.user = result.user
             console.log(store.user)
-            return store.user;
+            setListenerOnNotes();
+            hideLoginAndShowData();
           })
           .catch(function(error) {
             alert("Unable to login. Please try again.");
             console.log(error);
-          })
-          .then(function(user) {
-            return firebase.database().ref(user.uid).once("value");
-          })
-          .then(function(userData) {
-            console.log(userData.val());
-            store.data = userData.val();
-
-            hideLoginAndShowData();
-            showLoggedInViewFromStore();
-          })
-          .catch(function(error) {
-            alert("Unable to load user data.")
-            console.log(error);
           });
         }
       };
+
+      // Requires store.user be set.
+      var setListenerOnNotes = function() {
+        firebase.database()
+            .ref(store.user.uid)
+            .on("value", function(userData) {
+              console.log(userData.val());
+              store.data = userData.val();
+
+              showLoggedInViewFromStore();
+            });
+      }
 
       var createNewPeep = function(userId, peepName) {
         var database = firebase.database();
