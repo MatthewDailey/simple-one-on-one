@@ -8,7 +8,7 @@
             "$peep_id" : {
                 ".validate" : "newData.hasChildren(['name'])",
                 "name" : {
-                    ".validate" : "newData.isString()"
+                    ".validate" : "newData.isString() && newData.length > 0"
                 }
                 // Currently allow other fields.
                 // "$other" : {".validate" : false}
@@ -29,11 +29,11 @@
                 },
 
                 "title" : {
-                    ".validate" : "newData.isString()"
+                    ".validate" : "newData.isString() && newData.length > 0"
                 },
 
                 "message" : {
-                    ".validate" : "newData.isString()"
+                    ".validate" : "newData.isString() && newData.length > 0"
                 } 
             }
         },
