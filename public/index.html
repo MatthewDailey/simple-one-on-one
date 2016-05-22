@@ -241,10 +241,15 @@
       }
 
       var createNewNoteFromModal = function () {
-        // TODO add peep choosing.
+        var peepId = null;
+        if (document.getElementById("peeps-select").value != "None") {
+          peepId = document.getElementById("peeps-select").value;
+        }
+
         createNewNote(store.user.uid, 
           document.getElementById("new-note-title").value, 
-          document.getElementById("new-note-message").value);
+          document.getElementById("new-note-message").value,
+          peepId);
       };
 
       var createNewPeepFromModal = function () {

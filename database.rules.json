@@ -8,7 +8,7 @@
             "$peep_id" : {
                 ".validate" : "newData.hasChildren(['name'])",
                 "name" : {
-                    ".validate" : "newData.isString() && newData.length > 0"
+                    ".validate" : "newData.isString() && newData.val().length > 0"
                 }
                 // Currently allow other fields.
                 // "$other" : {".validate" : false}
@@ -22,6 +22,10 @@
                 // Note that peep_id is optional since a note may not be about a person.
                 ".validate" : "newData.hasChildren(['timestamp', 'title', 'message'])",
 
+                "peep_id" : {
+                    ".validate" : "root.child($user_id + '/peeps/' + newData.val()).exists()"
+                },
+
                 // Note that clients should use firebase.database.ServerValue.TIMESTAMP to 
                 // make sure timestamps are safe.
                 "timestamp" : {
@@ -29,11 +33,11 @@
                 },
 
                 "title" : {
-                    ".validate" : "newData.isString() && newData.length > 0"
+                    ".validate" : "newData.isString() && newData.val().length > 0"
                 },
 
                 "message" : {
-                    ".validate" : "newData.isString() && newData.length > 0"
+                    ".validate" : "newData.isString() && newData.val().length > 0"
                 } 
             }
         },
