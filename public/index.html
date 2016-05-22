@@ -250,11 +250,15 @@
           document.getElementById("new-note-title").value, 
           document.getElementById("new-note-message").value,
           peepId);
+
+        document.getElementById("new-note-title").value = "";
+        document.getElementById("new-note-message").value = "";
       };
 
       var createNewPeepFromModal = function () {
         createNewPeep(store.user.uid,
           document.getElementById("new-peep-name").value);
+        document.getElementById("new-peep-name").value = "";
       }
 
     </script>
