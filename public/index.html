@@ -152,13 +152,14 @@
         }
       }
 
-      var visibleNotesPredicate = alwaysTruePredicate;
+      var peepFilterPredicate = alwaysTruePredicate;
+      var dateFilterPredicate = alwaysTruePredicate;
 
       var selectVisibleNotes = function(notes) {
         var validNotes = []
         for (var noteKey in store.data.notes) {
           var note = store.data.notes[noteKey];
-          if (visibleNotesPredicate(note)) {
+          if (peepFilterPredicate(note) && dateFilterPredicate(note)) {
             validNotes.push(note);
           }  
         }          
@@ -187,10 +188,16 @@
           document.getElementById('data-view-list').appendChild(noteDiv);
         }
 
-        if (store.filterName) {
-          document.getElementById('view-type').innerHTML = ": " + store.filterName;
+        if (store.filterPeepName) {
+          document.getElementById('view-type').innerHTML = ": " + store.filterPeepName;
         } else {
-          document.getElementById('view-type').innerHTML = ": All Notes";
+          document.getElementById('view-type').innerHTML = ": All Peeps";
+        }
+
+        if (store.filterDateName) {
+          document.getElementById('date-view-type').innerHTML = store.filterDateName;
+        } else {
+          document.getElementById('date-view-type').innerHTML = "";
         }
       }
 
@@ -334,12 +341,12 @@
       var viewPeepFromModal = function() {
         var peepKey = document.getElementById("view-peep-select").value;
         if (peepKey == "All") {
-          visibleNotesPredicate = alwaysTruePredicate;
-          delete store.filterName;
+          peepFilterPredicate = alwaysTruePredicate;
+          delete store.filterPeepName;
         } else {
           if (store.data.peeps[peepKey]) {
-            visibleNotesPredicate = getNotesForPeep(peepKey);
-            store.filterName = store.data.peeps[peepKey].name;
+            peepFilterPredicate = getNotesForPeep(peepKey);
+            store.filterPeepName = store.data.peeps[peepKey].name;
           }
         }
         showLoggedInViewFromStore();
@@ -348,19 +355,22 @@
       var viewDatesFromModal = function() {
         var startDate = new Date(document.getElementById("startDate").value);
         var endDate = new Date(document.getElementById("endDate").value);
+
         var endDateInclusive = endDate
         // Make the end date inclusive.
         endDate.setDate(endDate.getDate() + 1);
 
-        visibleNotesPredicate = getDateRangePredicate(startDate.getTime(), endDate.getTime());
+        dateFilterPredicate = getDateRangePredicate(startDate.getTime(), endDate.getTime());
 
-        store.filterName = startDate.toDateString() + " to " + endDateInclusive.toDateString()
+        store.filterDateName = startDate.toDateString() + " to " + endDateInclusive.toDateString()
         showLoggedInViewFromStore();
       }
 
       var clearFilters = function() {
-        delete store.filterName;
-        visibleNotesPredicate = alwaysTruePredicate;
+        delete store.filterPeepName;
+        delete store.filterDateName;
+        dateFilterPredicate = alwaysTruePredicate;
+        peepFilterPredicate = alwaysTruePredicate;
 
         showLoggedInViewFromStore()
       }
@@ -389,6 +399,7 @@
           </ul>
         </nav>
         <h3 class="text-muted">People<span id="view-type"></span></h3>
+        <p id="date-view-type"></p>
       </div>
 
       <!-- Create Note Modal -->
