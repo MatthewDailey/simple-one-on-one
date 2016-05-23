@@ -356,14 +356,18 @@
         var startDate = new Date(document.getElementById("startDate").value);
         var endDate = new Date(document.getElementById("endDate").value);
 
-        var endDateInclusive = endDate
-        // Make the end date inclusive.
-        endDate.setDate(endDate.getDate() + 1);
+        if (startDate != "Invalid Date" && endDate != "Invalid Date") {
+          var endDateInclusive = endDate
+          // Make the end date inclusive.
+          endDate.setDate(endDate.getDate() + 1);
 
-        dateFilterPredicate = getDateRangePredicate(startDate.getTime(), endDate.getTime());
+          dateFilterPredicate = getDateRangePredicate(startDate.getTime(), endDate.getTime());
 
-        store.filterDateName = startDate.toDateString() + " to " + endDateInclusive.toDateString()
-        showLoggedInViewFromStore();
+          store.filterDateName = startDate.toDateString() + " to " + endDateInclusive.toDateString()
+          showLoggedInViewFromStore();  
+        } else {
+          alert("Unable to set date range filter. Both dates must match mm/dd/yyyy.")
+        }
       }
 
       var clearFilters = function() {
