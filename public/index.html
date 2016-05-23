@@ -358,6 +358,12 @@
         showLoggedInViewFromStore();
       }
 
+      var clearFilters = function() {
+        delete store.filterName;
+        visibleNotesPredicate = alwaysTruePredicate;
+
+        showLoggedInViewFromStore()
+      }
     </script>
     
 
@@ -373,6 +379,8 @@
                 <li class="dropdown-header">Views</li>
                 <li><a href="#" data-toggle="modal"  data-target="#viewDatesModal">Choose a time range</a></li>
                 <li><a href="#" data-toggle="modal"  data-target="#viewPeepModal">Choose a peep</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#" onclick="clearFilters()">Clear Filters</a></li>
               </ul>
             </li>
             <li role="presentation">
