@@ -356,6 +356,30 @@
         var startDate = new Date(document.getElementById("startDate").value);
         var endDate = new Date(document.getElementById("endDate").value);
 
+        viewDates(startDate, endDate);
+      }
+
+      var viewThisWeek = function() {
+        var currentDay = new Date().getDay();
+
+        var startDate = new Date();
+        startDate.setHours(0);
+        startDate.setMinutes(0);
+        startDate.setSeconds(0);
+        var distanceToSunday = 0 - currentDay;
+        startDate.setDate(startDate.getDate() + distanceToSunday);
+
+        var endDate = new Date();
+        endDate.setHours(0);
+        endDate.setMinutes(0);
+        endDate.setSeconds(0);
+        var distanceToSaturday = 6 - currentDay;
+        endDate.setDate(startDate.getDate() + distanceToSaturday);
+
+        viewDates(startDate, endDate);
+      }
+
+      var viewDates = function(startDate, endDate) {
         if (startDate != "Invalid Date" && endDate != "Invalid Date") {
           var endDateInclusive = endDate
           // Make the end date inclusive.
@@ -393,6 +417,8 @@
                 <li class="dropdown-header">Views</li>
                 <li><a href="#" data-toggle="modal"  data-target="#viewDatesModal">Choose a time range</a></li>
                 <li><a href="#" data-toggle="modal"  data-target="#viewPeepModal">Choose a peep</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#" onclick="viewThisWeek()">View This Week</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#" onclick="clearFilters()">Clear Filters</a></li>
               </ul>
