@@ -199,28 +199,38 @@
 
               showLoggedInViewFromStore();
               updateCreateNotePeepSelector();
+              updateViewPeepSelector();
             });
       }
 
-      var clearPeepsSelect = function() {
-        var dataViewNode = document.getElementById("peeps-select");
+      var updateCreateNotePeepSelector = function() {
+        updatePeepSelection("peeps-select", "None");
+      }
+
+      var updateViewPeepSelector = function() {
+        updatePeepSelection("view-peep-select", "All");
+      }
+
+      var clearPeepsSelect = function(selectorId) {
+        console.log(selectorId);
+        var dataViewNode = document.getElementById(selectorId);
         while (dataViewNode.firstChild) {
             dataViewNode.removeChild(dataViewNode.firstChild);
         }
       }
 
-      var updateCreateNotePeepSelector = function () {
-        clearPeepsSelect();
+      var updatePeepSelection = function(selectorId, defaultOptionValue) {
+        clearPeepsSelect(selectorId);
 
         var noneOption = document.createElement("option");
-        noneOption.innerHTML = "None";
-        document.getElementById("peeps-select").appendChild(noneOption);
+        noneOption.innerHTML = defaultOptionValue;
+        document.getElementById(selectorId).appendChild(noneOption);
         for (var peepKey in store.data.peeps) {
           var peep = store.data.peeps[peepKey];
           var option = document.createElement("option");
           option.innerHTML = peep.name;
           option.value = peepKey;
-          document.getElementById("peeps-select").appendChild(option);
+          document.getElementById(selectorId).appendChild(option);
         }
       }
 
@@ -292,6 +302,16 @@
         document.getElementById("new-peep-name").value = "";
       }
 
+      var viewPeepFromModal = function() {
+        var peepKey = document.getElementById("view-peep-select").value;
+        if (peepKey == "All") {
+          visibleNotesPredicate = alwaysTruePredicate;
+        } else {
+          visibleNotesPredicate = getNotesForPeep(peepKey);
+        }
+        showLoggedInViewFromStore();
+      }
+
     </script>
     
 
@@ -306,7 +326,7 @@
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Views</li>
                 <li><a href="#">Choose a time range</a></li>
-                <li><a href="#">Choose a peep</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#viewPeepModal">Choose a peep</a></li>
               </ul>
             </li>
             <li role="presentation">
@@ -317,7 +337,7 @@
         <h3 class="text-muted">People Manager</h3>
       </div>
 
-      <!-- Modal -->
+      <!-- Create Note Modal -->
       <div class="modal fade" id="createNoteModal" tabindex="-1" role="dialog" aria-labelledby="createNoteModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -347,7 +367,7 @@
         </div>
       </div>
 
-      <!-- Modal -->
+      <!-- Add Peep Modal -->
       <div class="modal fade" id="addPeepModal" tabindex="-1" role="dialog" aria-labelledby="addPeepModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -367,6 +387,28 @@
           </div>
         </div>
       </div>
+
+      <!-- Filter to Peep Modal -->
+      <div class="modal fade" id="viewPeepModal" tabindex="-1" role="dialog" aria-labelledby="viewPeepModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="viewPeepModalLabel">View Notes for Peep</h4>
+            </div>
+            <div class="modal-body">
+              <form role="form">
+                <div class="form-group">
+                  <select class="form-control" id="view-peep-select">
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="viewPeepFromModal()">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <div class="jumbotron" id="login-box">
         <h1>Welcome to People Manager</h1>
