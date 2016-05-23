@@ -164,8 +164,8 @@
           document.getElementById('data-view-list').appendChild(noteDiv);
         }
 
-        if (store.filteredPeepName) {
-          document.getElementById('view-type').innerHTML = ": " + store.filteredPeepName;
+        if (store.filterName) {
+          document.getElementById('view-type').innerHTML = ": " + store.filterName;
         } else {
           document.getElementById('view-type').innerHTML = ": All Notes";
         }
@@ -312,11 +312,11 @@
         var peepKey = document.getElementById("view-peep-select").value;
         if (peepKey == "All") {
           visibleNotesPredicate = alwaysTruePredicate;
-          delete store.filteredPeepName;
+          delete store.filterName;
         } else {
           if (store.data.peeps[peepKey]) {
             visibleNotesPredicate = getNotesForPeep(peepKey);
-            store.filteredPeepName = store.data.peeps[peepKey].name;
+            store.filterName = store.data.peeps[peepKey].name;
           }
         }
         showLoggedInViewFromStore();
@@ -336,11 +336,11 @@
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Views</li>
                 <li><a href="#">Choose a time range</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#viewPeepModal">Choose a peep</a></li>
+                <li><a href="#" data-toggle="modal"  data-target="#viewPeepModal">Choose a peep</a></li>
               </ul>
             </li>
             <li role="presentation">
-              <a type="button"  data-toggle="modal" data-target="#createNoteModal">Create Note</a>
+              <a type="button"  data-toggle="modal" role="button" data-target="#createNoteModal">Create Note</a>
             </li>
           </ul>
         </nav>
