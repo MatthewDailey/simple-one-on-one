@@ -172,6 +172,14 @@
 
       var sortNotes = sortByTimestamp;
 
+      var getNoteTitle = function(note) {
+        if (note.peep_id) {
+          return "[" + store.data.peeps[note.peep_id].name + "] - " + note.title;
+        } else {
+          return note.title;
+        }
+      }
+
       var showLoggedInViewFromStore = function() {
         console.log("Showing logged in data view.");
         clearDataView();
@@ -182,7 +190,7 @@
           var note = visibleNotes[noteKey];
           var noteDiv = document.createElement('div');
           noteDiv.className = "col-lg-12";
-          noteDiv.innerHTML = "<h3>" + note.title + "</h3>"
+          noteDiv.innerHTML = "<h3>" + getNoteTitle(note) + "</h3>"
                           + "<h6>" + new Date(note.timestamp) + "</h6>"
                           + "<p>" + note.message + "</p>";
           document.getElementById('data-view-list').appendChild(noteDiv);
