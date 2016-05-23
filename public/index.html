@@ -85,14 +85,31 @@
           border-bottom: 0;
         }
       }
+
+      .datepicker{z-index:1151 !important;}
     </style>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
   </head>
   <body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
+
     
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
     <script>
+      $(document).ready(function() {
+        // Set up date picker.
+        $('#datePicker').datepicker({
+              autoclose: true,
+              format: 'mm/dd/yyyy'
+          });
+      });
+
+
       // Initialize Firebase
       var config = {
         apiKey: "AIzaSyAHsBIF67mHchYUg0vtOtRpWw0r268-bZ8",
@@ -126,6 +143,12 @@
       var getNotesForPeep = function(peepId) {
         return function(note) {
           return peepId == note.peep_id
+        }
+      }
+
+      var getDateRangePredicate = function(startTimestamp, endTimestamp) {
+        return function(note) {
+          return note.timestamp > startTimestamp && note.timestamp < endTimestamp;
         }
       }
 
@@ -322,6 +345,19 @@
         showLoggedInViewFromStore();
       }
 
+      var viewDatesFromModal = function() {
+        var startDate = new Date(document.getElementById("startDate").value);
+        var endDate = new Date(document.getElementById("endDate").value);
+        var endDateInclusive = endDate
+        // Make the end date inclusive.
+        endDate.setDate(endDate.getDate() + 1);
+
+        visibleNotesPredicate = getDateRangePredicate(startDate.getTime(), endDate.getTime());
+
+        store.filterName = startDate.toDateString() + " to " + endDateInclusive.toDateString()
+        showLoggedInViewFromStore();
+      }
+
     </script>
     
 
@@ -335,7 +371,7 @@
                 <li><a href="#" data-toggle="modal" data-target="#addPeepModal">Add Peep</a></li>
                 <li role="separator" class="divider"></li>
                 <li class="dropdown-header">Views</li>
-                <li><a href="#">Choose a time range</a></li>
+                <li><a href="#" data-toggle="modal"  data-target="#viewDatesModal">Choose a time range</a></li>
                 <li><a href="#" data-toggle="modal"  data-target="#viewPeepModal">Choose a peep</a></li>
               </ul>
             </li>
@@ -419,6 +455,29 @@
         </div>
       </div>
 
+      <!-- Filter to Date Range -->
+      <div class="modal fade" id="viewDatesModal" tabindex="-1" role="dialog" aria-labelledby="viewDatesModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="viewDatesModalLabel">View Notes in Date Range</h4>
+            </div>
+            <div class="modal-body">
+              <form role="form">
+                <div class="form-group">
+                  <div class="input-daterange input-group" id="datePicker">
+                    <input type="text" class="input-sm form-control" name="start" id="startDate" />
+                    <span class="input-group-addon">to</span>
+                    <input type="text" class="input-sm form-control" name="end" id="endDate"/>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="viewDatesFromModal()">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="jumbotron" id="login-box">
         <h1>Welcome to People Manager</h1>
