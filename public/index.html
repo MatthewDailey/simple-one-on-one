@@ -299,9 +299,18 @@
       <div class="header clearfix">
         <nav id="nav-data-view" style="display: none;">
           <ul class="nav nav-pills pull-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Other Actions <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" data-toggle="modal" data-target="#addPeepModal">Add Peep</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Views</li>
+                <li><a href="#">Choose a time range</a></li>
+                <li><a href="#">Choose a peep</a></li>
+              </ul>
+            </li>
             <li role="presentation">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPeepModal">Add Peep</button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createNoteModal">Create Note</button>
+              <a type="button"  data-toggle="modal" data-target="#createNoteModal">Create Note</a>
             </li>
           </ul>
         </nav>
