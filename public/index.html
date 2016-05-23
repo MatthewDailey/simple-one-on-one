@@ -113,7 +113,7 @@
       };
 
       var clearDataView = function() {
-        var dataViewNode = document.getElementById("data-view");
+        var dataViewNode = document.getElementById("data-view-list");
         while (dataViewNode.firstChild) {
           dataViewNode.removeChild(dataViewNode.firstChild);
         }
@@ -161,7 +161,13 @@
           noteDiv.innerHTML = "<h3>" + note.title + "</h3>"
                           + "<h6>" + new Date(note.timestamp) + "</h6>"
                           + "<p>" + note.message + "</p>";
-          document.getElementById('data-view').appendChild(noteDiv);
+          document.getElementById('data-view-list').appendChild(noteDiv);
+        }
+
+        if (store.filteredPeepName) {
+          document.getElementById('view-type').innerHTML = ": " + store.filteredPeepName;
+        } else {
+          document.getElementById('view-type').innerHTML = ": All Notes";
         }
       }
 
@@ -306,8 +312,12 @@
         var peepKey = document.getElementById("view-peep-select").value;
         if (peepKey == "All") {
           visibleNotesPredicate = alwaysTruePredicate;
+          delete store.filteredPeepName;
         } else {
-          visibleNotesPredicate = getNotesForPeep(peepKey);
+          if (store.data.peeps[peepKey]) {
+            visibleNotesPredicate = getNotesForPeep(peepKey);
+            store.filteredPeepName = store.data.peeps[peepKey].name;
+          }
         }
         showLoggedInViewFromStore();
       }
@@ -334,7 +344,7 @@
             </li>
           </ul>
         </nav>
-        <h3 class="text-muted">People Manager</h3>
+        <h3 class="text-muted">People<span id="view-type"></span></h3>
       </div>
 
       <!-- Create Note Modal -->
@@ -418,6 +428,7 @@
       </div>
       
       <div class="row marketing" id="data-view" style="display: none;">
+        <div id="data-view-list"></div>
       </div>
 
       <footer class="footer">
