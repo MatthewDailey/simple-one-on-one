@@ -12,6 +12,10 @@
         padding-bottom: 20px;
       }
 
+      .note-content {
+        white-space: pre;
+      }
+
       /* Everything but the jumbotron gets side spacing for mobile first views */
       .header,
       .marketing,
@@ -192,7 +196,7 @@
           noteDiv.className = "col-lg-12";
           noteDiv.innerHTML = "<h3>" + getNoteTitle(note) + "</h3>"
                           + "<h6>" + new Date(note.timestamp) + "</h6>"
-                          + "<p>" + note.message + "</p>";
+                          + "<p class='note-content'>" + note.message + "</p>";
           document.getElementById('data-view-list').appendChild(noteDiv);
         }
 
